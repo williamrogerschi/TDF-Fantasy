@@ -10,7 +10,7 @@ Formula: SP + AP / Cost
 
 */
 
-riders = {
+const riders = {
     'Landa': {
         'stagePoints': 108,
         'avgPoints': 34.3,
@@ -26,7 +26,7 @@ riders = {
     'Bilbao': {
         'stagePoints': 23,
         'avgPoints': 29.3,
-        'cost': 16,
+        'cost': 15,
         'overallStanding':  358
     },
     'Gee': {
@@ -38,19 +38,19 @@ riders = {
     'Gall': {
         'stagePoints': 70,
         'avgPoints': 23.4,
-        'cost': 16,
+        'cost': 17,
         'overallStanding':  366
     },
     'Rodriguez': {
         'stagePoints': 153,
         'avgPoints': 64.3,
-        'cost': 16,
+        'cost': 18,
         'overallStanding':  151
     },
     'Haig': {
         'stagePoints': 17,
         'avgPoints': 14.2,
-        'cost': 16,
+        'cost': 14,
         'overallStanding':  457
     },
     'Kristoff': {
@@ -60,3 +60,36 @@ riders = {
         'overallStanding':  6136
     },
 }
+
+
+const calculateEffectiveness = (stagePoints, avgPoints, overallStanding) => {
+   return (stagePoints + avgPoints) / overallStanding
+}
+
+const calculateEfficiency = (stagePoints, avgPoints, cost) => {
+    return (stagePoints + avgPoints) / cost
+}
+
+const results = {}
+
+Object.entries(riders).forEach(([rider, data]) => {
+    const effectiveness = calculateEffectiveness(data.stagePoints, data.avgPoints, data.overallStanding)
+    const efficiency = calculateEfficiency(data.stagePoints, data.avgPoints, data.cost)
+    results[rider] = { effectiveness, efficiency}
+})
+
+console.log(results, riders)
+
+
+const riderResults = document.getElementById('riderResults').getElementsByTagName('tbody')[0]
+
+Object.entries(results).forEach(([rider, data]) => {
+    const row = riderResults.insertRow()
+    const riderCell = row.insertCell(0)
+    const effectivenessCell = row.insertCell(1)
+    const efficiencyCell  = row.insertCell(2)
+
+    riderCell.textContent = rider
+    effectivenessCell.textContent = data.effectiveness.toFixed(4)
+    efficiencyCell.textContent = data.efficiency.toFixed(4)
+})
